@@ -8,4 +8,11 @@ let utils = new (function () {
         }
         return target;
     };
+    this.mapObject = (obj, mapper) => {
+        let mappedObj = {};
+        for (key in obj) {
+            mappedObj[this.getDefault(mapper, key, key)] = obj[key];
+        }
+        return mappedObj;
+    };
 })();

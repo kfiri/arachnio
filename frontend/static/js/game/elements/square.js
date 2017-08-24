@@ -6,5 +6,4 @@ class Square {
             points: 0
         });
     }
-
 }
