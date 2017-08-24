@@ -5,18 +5,14 @@ class BoardView {
         this.playerSvgs = {};
         this.bonuses = {};
         this.svg = SVG('board').size(TILE_SIZE * cols, TILE_SIZE * rows);
-        let tiles = [];
         for (let x = 0; x < cols; x++) {
-            let row = [];
             for (let y = 0; y < rows; y++) {
                 let tile = this.svg.rect(TILE_SIZE, TILE_SIZE).move(x * TILE_SIZE, y * TILE_SIZE)
                     .attr({
                         stroke: '#ddd',
                         fill: 'transparent'
                     });
-                row.push(tile);
             }
-            tiles.push(row);
         }
     }
 
