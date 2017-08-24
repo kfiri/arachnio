@@ -1,0 +1,21 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Helvetica', 'Arial', 'Liberation Sans', sans-serif
+}
+
+#board {
+    overflow: hidden;
+    width: 100%;
+    height: 75vh;
+    text-align: center;
+}
+
+#user-code {
+    height: 24vh;
+    border: none;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    font-family: 'Inconsolata', 'Menlo', 'Monaco', 'Consolas', 'Courier New', 'DejaVu Sans Mono', monospace;
+}

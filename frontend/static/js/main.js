@@ -1,5 +1,6 @@
 let game = new (function() {
     this.board = null;
+    this.boardView = null;
 
     let user = new (function() {
         this.name = null;
@@ -9,21 +10,22 @@ let game = new (function() {
     let userPlayer = null;
 
     let getServerData = (data) => {
-        this.board = Board(utils.mapObject(data, {
+        this.board = new Board(utils.mapObject(data, {
             board_width: "width",
             board_height: "height",
-            is_cycle: "isCyclic"
+            is_cyclic: "isCyclic"
         }));
+        this.boardView = new BoardView(this.board.width, this.board.height);
     }
 
     let createPlayer = (data) => {
-        // Add player (TODO)
-        userPlayer = this.board.addPlayer(playerID, data);
+        userPlayer = this.board.addPlayer(data.id, data);
+        this.boardView.addPlayer(userPlayer);
     }
 
     let updateBoard = (data) => {
         if (this.board == null || userPlayer == null) {
-            console.warn("got update from the server before initialazation:" +
+            console.warn("got update from the server before initialization:" +
                          "\nboard=" + this.board + "\nplayer=" + userPlayer);
             return;
         }
@@ -36,15 +38,15 @@ let game = new (function() {
             if (updatedPlayers.hasOwnProperty(playerID)) {
                 let player = this.board.getPlayer(playerID)
                 if (player == null) {
-                    // Add player (TODO)
                     player = this.board.addPlayer(playerID, updatedPlayers[playerID]);
+                    this.boardView.addPlayer(player);
                 } else {
-                    // Update player (TODO)
                     player.update(updatedPlayers[playerID])
+                    this.boardView.updatePlayer(player);
                 }
             } else {
-                // Delete player (TODO)
                 this.board.deletePlayer(playerID);
+                this.boardView.deletePlayer(allPlayers[playerID]);
             }
         }
     }
@@ -63,7 +65,7 @@ let game = new (function() {
                         data: {name: user.name}
                     }));
                     break;
-                case("knock ack"):
+                case("knockack"):
                     createPlayer(messageData);
                     break;
                 case("info"): updateBoard(messageData); break;
@@ -80,11 +82,11 @@ let game = new (function() {
 
     this.start = () => {
         openWebSocket();
-        // ???
+        console.log('Connecting...');
     }
 
     this.getBonusSquares = () => {
-        return Object.entries(this.board.squares).map(([key, square]) => square).filter(square => square.points)
+        return Object.entries(this.board.squares).map(([key, square]) => square).filter(square => square.points);
     }
 })()
 
