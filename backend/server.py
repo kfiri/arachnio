@@ -23,8 +23,9 @@ def run_server(ip, port):
     http_server = HTTPServer(Application(handlers), **settings)
     http_server.listen(port, ip)
     main_loop = IOLoop.instance()
-    game_task = PeriodicCallback(None, 100)
+    game_task = PeriodicCallback(Game().game_iteration, 100)
 
+    game_task.start()
     main_loop.start()
 
 

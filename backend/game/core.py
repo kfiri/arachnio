@@ -8,11 +8,15 @@ class Game(object):
     """
     Core game singleton. Holds game data and dispatches it to clients
     """
-    __shared_state = {}
+    __instance = None
+
+    def __new__(cls, *args, **kwargs):
+        if cls.__instance == None:
+            cls.__instance = super().__new__(cls)
+        return cls.__instance
 
     def __init__(self, width=config.WIDTH, height=config.HEIGHT,
         is_cyclic=config.IS_CYCLIC):
-        self.__dict__ = self.__shared_state
         self.width = width
         self.height = height
         self.socket_to_player = dict()
@@ -34,7 +38,7 @@ class Game(object):
     
     def send_update(self):
         game_state = {
-            'players_info': 
+            'players': 
                 {player.id: player.prepare_json() for player in self.socket_to_player.values()}
         }
 
