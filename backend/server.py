@@ -29,6 +29,7 @@ def run_server_logged(ip, port):
     logger_setup = logbook.NestedSetup(
         [logbook.NullHandler(), logbook.StreamHandler(sys.stdout, level=logbook.DEBUG, bubble=True)])
     with logger_setup.applicationbound():
+        logbook.info('Listening on {}:{}'.format(config.IP, config.PORT))
         run_server(ip, port)
 
 
