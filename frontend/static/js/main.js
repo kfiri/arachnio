@@ -10,16 +10,16 @@ let game = new (function() {
     let userPlayer = null;
 
     let getServerData = (data) => {
-        this.board = Board(utils.mapObject(data, {
+        this.board = new Board(utils.mapObject(data, {
             board_width: "width",
             board_height: "height",
-            is_cycle: "isCyclic"
+            is_cyclic: "isCyclic"
         }));
         this.boardView = new BoardView(this.board.width, this.board.height);
     }
 
     let createPlayer = (data) => {
-        userPlayer = this.board.addPlayer(playerID, data);
+        userPlayer = this.board.addPlayer(data.id, data);
         this.boardView.addPlayer(userPlayer);
     }
 

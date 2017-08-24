@@ -19,8 +19,8 @@ class BoardView {
     addPlayer(player) {
         this.playerSvgs[player.id] = this.svg.circle(0)
             .attr({
-                cx: player.xPosition * TILE_SIZE + TILE_SIZE / 2,
-                cy: player.yPosition * TILE_SIZE + TILE_SIZE / 2,
+                cx: player.x * TILE_SIZE + TILE_SIZE / 2,
+                cy: player.y * TILE_SIZE + TILE_SIZE / 2,
                 fill: player.color || '#a00'
             })
             .animate(400, '<>')
@@ -37,8 +37,8 @@ class BoardView {
             .stop(false, true)
             .animate(600, '<>')
             .attr({
-                cx: player.xPosition * TILE_SIZE + TILE_SIZE / 2,
-                cy: player.yPosition * TILE_SIZE + TILE_SIZE / 2,
+                cx: player.x * TILE_SIZE + TILE_SIZE / 2,
+                cy: player.y * TILE_SIZE + TILE_SIZE / 2,
                 r: player.size,
                 dy: 0
             })
