@@ -11,7 +11,7 @@ body {
     text-align: center;
 }
 
-textarea {
+#user-code {
     height: 24vh;
     border: none;
     margin: 0;
