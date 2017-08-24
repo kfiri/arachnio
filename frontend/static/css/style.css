@@ -1,0 +1,10 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+#board {
+    overflow: hidden;
+    width: 100%;
+    height: 75vh;
+}
