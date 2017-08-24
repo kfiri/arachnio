@@ -2,6 +2,7 @@ import json
 from random import randint
 
 from .player import Player
+from . import message
 from .. import config
 
 class Game(object):
@@ -28,7 +29,7 @@ class Game(object):
     
     def send_welcome(self, player_socket):
         player_socket.write_message(json.loads({
-            'type': 'welcome',
+            'type': message.WELCOME,
             'data': {
                 'width': self.width,
                 'height': self.height,
@@ -44,13 +45,13 @@ class Game(object):
 
         for player_socket in self.socket_to_player.keys():
             player_socket.write_message(json.loads({
-                'type': 'info',
+                'type': message.INFO,
                 'data': game_state
             }))
 
     def send_knockack(self, player_socket):
         player_socket.write_message(json.loads({
-            'type': 'knockack',
+            'type': message.KNOCKACK,
             'data': self.socket_to_player[player_socket].prepare_json()
         }))
     

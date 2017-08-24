@@ -3,12 +3,13 @@ import logbook
 from tornado.websocket import WebSocketHandler
 
 from .core import Game
+from . import message
 from .. import config
 
 class ClientWebSocketHandler(WebSocketHandler):
 
     game = Game()
-    message_handlers = dict()
+    message_type_handlers = dict()
 
     def open(self, *args, **kwargs):
         ClientWebSocketHandler.game.send_welcome(self)
@@ -16,7 +17,7 @@ class ClientWebSocketHandler(WebSocketHandler):
     def on_message(self, message):
         try:
             message = json.dumps(message)
-            ClientWebSocketHandler.message_handlers[message['type']](self, message['data'])
+            ClientWebSocketHandler.message_type_handlers[message['type']](self, message['data'])
 
         except (KeyError, json.JSONDecodeError):
             logbook.debug('Malformed message: {}'.format(repr(message)))
@@ -37,7 +38,7 @@ class ClientWebSocketHandler(WebSocketHandler):
         Registers a callback for a certain event type (string).
         Callback receives a message object (dict).
         """
-        cls.message_handlers[message_type] = callback
+        cls.message_type_handlers[message_type] = callback
 
 def type_knock_handler(src_socket, data):
     player = ClientWebSocketHandler.game.create_new_player(src_socket, data['name'])
@@ -45,4 +46,4 @@ def type_knock_handler(src_socket, data):
     src_socket.game.send_knockack(src_socket)
     
 
-ClientWebSocketHandler.register_message_type_handler("knock", type_knock_handler)
+ClientWebSocketHandler.register_message_type_handler(message.KNOCK, type_knock_handler)
