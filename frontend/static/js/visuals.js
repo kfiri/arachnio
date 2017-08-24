@@ -95,5 +95,3 @@ class BoardView {
             })
     }
 }
-
-let boardView = new BoardView(8, 8);
