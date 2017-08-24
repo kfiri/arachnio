@@ -22,8 +22,7 @@ This message contains information about current game state. Such message should 
 
 #### type name: info
 #### message fields:
-* players_info: array of objects which represent a single player, and contain the following fields:
-  * id: player id
+* players_info: dictionary id keys and an object value that represent a single player, and contain the following fields:
   * name: player name
   * x: x location
   * y: y location
