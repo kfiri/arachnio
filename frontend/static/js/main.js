@@ -18,7 +18,7 @@ let game = new (function() {
 
     let createPlayer = (data) => {
         // Add player (TODO)
-        userPlayer = this.board.addPlayer(playerID, updatedPlayers[playerID]);
+        userPlayer = this.board.addPlayer(playerID, data);
     }
 
     let updateBoard = (data) => {
@@ -63,7 +63,7 @@ let game = new (function() {
                         data: {name: user.name}
                     }));
                     break;
-                case(""):
+                case("knock ack"):
                     createPlayer(messageData);
                     break;
                 case("info"): updateBoard(messageData); break;
