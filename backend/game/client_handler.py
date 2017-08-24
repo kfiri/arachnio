@@ -14,6 +14,13 @@ class ClientWebSocketHandler(WebSocketHandler):
     def open(self, *args, **kwargs):
         ClientWebSocketHandler.game.send_welcome(self)
     
+    def on_close(self):
+        player = self.game.socket_to_player.pop(self, None)
+        if player is not None:
+            logbook.info('<{}> disconnected..'.format(player.id))
+        else:
+            logbook.info('A connection without a player has been closed..')
+    
     def on_message(self, message):
         try:
             message = json.loads(message)
