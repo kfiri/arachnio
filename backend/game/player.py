@@ -2,7 +2,7 @@ from uuid import uuid4
 
 class Player(object):
 
-    def __init__(self, websocket, x=0, y=0, name="Deuce", score=0):
+    def __init__(self, websocket, name, x=0, y=0, score=0):
         self.score = score
         self.x = x
         self.y = y

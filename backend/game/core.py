@@ -23,7 +23,7 @@ class Game(object):
         self.socket_to_player = dict()
         self.is_cyclic = is_cyclic
     
-    def create_new_player(self, websocket, name="Deuce"):
+    def create_new_player(self, websocket, name):
         return Player(websocket=websocket, x=randint(0, self.width),
             y=randint(0, self.height), name=name)
     
