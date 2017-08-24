@@ -10,3 +10,8 @@ TEMP_FOLDER = r'C:\Temp\arachnio' if os.name == 'nt' else '/tmp'
 IP = '0.0.0.0'
 
 PORT = 10946
+
+# Game related values
+WIDTH = 16
+HEIGHT = 16
+IS_CYCLIC = True
