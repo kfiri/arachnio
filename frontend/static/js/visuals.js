@@ -3,7 +3,7 @@ const TILE_SIZE = 48;
 class BoardView {
     constructor(cols, rows) {
         this.playerSvgs = {};
-        this.bonuses = {};
+        this.bonusSvgs = {};
         this.svg = SVG('board').size(TILE_SIZE * cols, TILE_SIZE * rows);
         for (let x = 0; x < cols; x++) {
             for (let y = 0; y < rows; y++) {
@@ -74,11 +74,11 @@ class BoardView {
         bonus.animate(5000 + Math.random() * 5000, '-')
             .rotate(360, x * TILE_SIZE + TILE_SIZE / 2, y * TILE_SIZE + TILE_SIZE / 2)
             .loop();
-        this.bonuses[x + ',' + y] = bonus;
+        this.bonusSvgs[x + ',' + y] = bonus;
     }
 
     deleteBonus(x, y) {
-        let bonus = this.bonuses[x + ',' + y];
+        let bonus = this.bonusSvgs[x + ',' + y];
         console.log(bonus)
         bonus.stop(false, true)
             .animate(300, '>')
