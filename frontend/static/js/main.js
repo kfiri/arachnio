@@ -25,11 +25,11 @@ let game = new (function() {
 
     let updateBoard = (data) => {
         if (this.board == null || userPlayer == null) {
-            console.warn("got update from the server before initialization:" +
-                         "\nboard=" + this.board + "\nplayer=" + userPlayer);
+            console.error("got update from the server before initialization:" +
+                          "\nboard=" + this.board + "\nplayer=" + userPlayer);
             return;
         }
-        this.updatePlayers(data);
+        this.updatePlayers(data.players);
     }
 
     let updatePlayers = (updatedPlayers) => {
@@ -52,7 +52,7 @@ let game = new (function() {
     }
 
     let openWebSocket = () => {
-        let webSocket = new WebSocket("");
+        let webSocket = new WebSocket("ws://localhost:10946/ws");  //TODO: change from localhost.
         webSocket.onmessage = message => {
             message = JSON.parse(message);
             let messageType = message.type;
