@@ -3,25 +3,29 @@ import sys
 import click
 import logbook
 from tornado.httpserver import HTTPServer
-from tornado.ioloop import IOLoop
+from tornado.ioloop import IOLoop, PeriodicCallback
 from tornado.web import Application, FallbackHandler
 from tornado.wsgi import WSGIContainer
 
 from . import config
 from .app import app
-from .ws_handler import AppWebSocketHandler
+from .game.client_handler import ClientWebSocketHandler
+from .game.core import Game
 
 
 def run_server(ip, port):
     settings = dict()
     flask_container = WSGIContainer(app)
     handlers = [
-        (r'/ws', AppWebSocketHandler),
+        (r'/ws', ClientWebSocketHandler),
         (r'.*', FallbackHandler, dict(fallback=flask_container))
     ]
     http_server = HTTPServer(Application(handlers), **settings)
     http_server.listen(port, ip)
-    IOLoop.instance().start()
+    main_loop = IOLoop.instance()
+    game_task = PeriodicCallback(None, 100)
+
+    main_loop.start()
 
 
 def run_server_logged(ip, port):
