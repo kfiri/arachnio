@@ -7,9 +7,9 @@ from tornado.ioloop import IOLoop
 from tornado.web import Application, FallbackHandler
 from tornado.wsgi import WSGIContainer
 
-from backend import config
-from backend.app import app
-from backend.ws_handler import AppWebSocketHandler
+from . import config
+from .app import app
+from .ws_handler import AppWebSocketHandler
 
 
 def run_server(ip, port):
