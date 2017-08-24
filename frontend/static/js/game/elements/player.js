@@ -14,7 +14,7 @@ class Player {
     get size() {
         return CONSTS.INITIAL_SIZE + (this.score * CONSTS.SCORE_SIZE);
     }
-    
+
     /**
      * Get the speed of the player, calculated by his size.
      */

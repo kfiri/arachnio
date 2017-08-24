@@ -16,7 +16,7 @@ class ClientWebSocketHandler(WebSocketHandler):
     
     def on_message(self, message):
         try:
-            message = json.dumps(message)
+            message = json.loads(message)
             ClientWebSocketHandler.message_type_handlers[message['type']](self, message['data'])
 
         except (KeyError, json.JSONDecodeError):

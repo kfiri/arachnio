@@ -54,7 +54,7 @@ let game = new (function() {
     let openWebSocket = () => {
         let webSocket = new WebSocket("ws://localhost:10946/ws");  //TODO: change from localhost.
         webSocket.onmessage = message => {
-            message = JSON.parse(message);
+            message = JSON.parse(message.data);
             let messageType = message.type;
             let messageData = message.data;
             switch(messageType) {

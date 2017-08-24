@@ -28,7 +28,7 @@ class Game(object):
             y=randint(0, self.height), name=name)
     
     def send_welcome(self, player_socket):
-        player_socket.write_message(json.loads({
+        player_socket.write_message(json.dumps({
             'type': message.WELCOME,
             'data': {
                 'width': self.width,
@@ -44,13 +44,13 @@ class Game(object):
         }
 
         for player_socket in self.socket_to_player.keys():
-            player_socket.write_message(json.loads({
+            player_socket.write_message(json.dumps({
                 'type': message.INFO,
                 'data': game_state
             }))
 
     def send_knockack(self, player_socket):
-        player_socket.write_message(json.loads({
+        player_socket.write_message(json.dumps({
             'type': message.KNOCKACK,
             'data': self.socket_to_player[player_socket].prepare_json()
         }))
