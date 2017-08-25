@@ -58,8 +58,13 @@ let game = new (function() {
                     player = this.board.addPlayer(playerID, updatedPlayers[playerID]);
                     this.boardView.addPlayer(player);
                 } else {
+                    // Update only if the data has actually changed, to prevent animations from stopping and restarting
+                    // all the time.
+                    let old = {x: player.x, y: player.y, score: player.score};
                     player.update(updatedPlayers[playerID])
-                    this.boardView.updatePlayer(player, playerIsFirstHalf ? 1 : playerIsSecondHalf ? 2 : 0);
+                    if (player.x !== old.x || player.y !== old.y || player.score !== old.score) {
+                        this.boardView.updatePlayer(player, playerIsFirstHalf ? 1 : playerIsSecondHalf ? 2 : 0);
+                    }
                 }
             } else {
                 this.board.deletePlayer(playerID);
