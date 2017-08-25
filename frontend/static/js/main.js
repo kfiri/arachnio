@@ -29,20 +29,39 @@ let game = new (function() {
                           "\nboard=" + this.board + "\nplayer=" + userPlayer);
             return;
         }
-        this.updatePlayers(data.players);
+        updatePlayers(data.players);
     }
 
     let updatePlayers = (updatedPlayers) => {
-        let allPlayers = Object.assign({}, this.board.players, updatedPlayers)
-        for (playerID in allPlayers) {
+        let allPlayers = Object.assign({}, this.board.players, updatedPlayers);
+
+        // Test for cases of two or more players on the same tile.
+        let coordMapping = {};
+        for (let playerID in allPlayers) {
+            let coords = allPlayers[playerID].x + ',' + allPlayers[playerID].y;
+            if (coordMapping[coords]) {
+                coordMapping[coords].push(playerID);
+            } else {
+                coordMapping[coords] = [playerID];
+            }
+        }
+
+        for (let playerID in allPlayers) {
             if (updatedPlayers.hasOwnProperty(playerID)) {
                 let player = this.board.getPlayer(playerID)
                 if (player == null) {
                     player = this.board.addPlayer(playerID, updatedPlayers[playerID]);
                     this.boardView.addPlayer(player);
                 } else {
+                    // Update only if the data has actually changed, to prevent animations from stopping and restarting
+                    // all the time.
+                    let old = player.toJSON();
                     player.update(updatedPlayers[playerID])
-                    this.boardView.updatePlayer(player);
+                    let indexOnTile = coordMapping[player.x + ',' + player.y].indexOf(playerID);
+                    let countOnTile = coordMapping[player.x + ',' + player.y].length;
+                    if (!_.isEqual(old, player)) {
+                        this.boardView.updatePlayer(player, countOnTile, indexOnTile);
+                    }
                 }
             } else {
                 this.board.deletePlayer(playerID);
