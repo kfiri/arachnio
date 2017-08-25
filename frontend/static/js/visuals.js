@@ -60,7 +60,7 @@ class BoardView {
             .loop(undefined, true);
         this.nametagSvgs[player.id]
             .stop(false, true)
-            .animate(400, '-')
+            .animate(100, '-')
             .move(player.x * TILE_SIZE + TILE_SIZE / 2 + xOffset, player.y * TILE_SIZE + TILE_SIZE / 2);
     }
 
