@@ -83,25 +83,26 @@ let game = new (function() {
             alert("Lost connection to the server!");
         }
         this.makeTurn = (args) => {
-            //webSocket.send(JSON.stringify(args));
+            webSocket.send(JSON.stringify({type: "update", data: args}));
         }
     };
 
     async function runBot(user) {
         let myCode = `// My first bot!
+        console.log(this);
         nextMove.direction = [-1, -1]`
         function bot(code, nextMove) {
             eval("(() => {" + code + "})()");
             game.makeTurn(nextMove);
         }
-        while (userPlayer == null) {
-            await utils.sleep(1000);
-            while (userPlayer != null) {
-                if (userPlayer.secondsToNextMove() == 0) {
-                    bot.call(userPlayer.toJSON(), myCode, {direction: [0, 0]});
-                }
-                await utils.sleep(Math.max(250, userPlayer.secondsToNextMove() * 1000));
+        while (true) {
+            if (userPlayer != null) {
+                bot.call(Object.assign(userPlayer.toJSON(), {
+                    size: userPlayer.size,
+                    speed: userPlayer.speed
+                }), myCode, {direction: [0, 0]});
             }
+            await utils.sleep(250);
         }
     }
 
