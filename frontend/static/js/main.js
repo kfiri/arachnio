@@ -27,7 +27,7 @@ let game = new (function() {
                           "\nboard=" + this.board + "\nplayer=" + userPlayer);
             return;
         }
-        this.updatePlayers(data.players);
+        updatePlayers(data.players);
     };
 
     let updatePlayers = (updatedPlayers) => {
@@ -94,9 +94,14 @@ let game = new (function() {
             eval("(() => {" + code + "})()");
             game.makeTurn(nextMove);
         }
-        while(userPlayer != null) {
-            bot.call(userPlayer.toJSON(), myCode, {direction: [0, 0]});
-            utils.sleep(userPlayer.secondsToNextMove() * 1000);
+        while (userPlayer == null) {
+            await utils.sleep(1000);
+            while (userPlayer != null) {
+                if (userPlayer.secondsToNextMove() == 0) {
+                    bot.call(userPlayer.toJSON(), myCode, {direction: [0, 0]});
+                }
+                await utils.sleep(Math.max(250, userPlayer.secondsToNextMove() * 1000));
+            }
         }
     }
 
