@@ -32,12 +32,13 @@ class BoardView {
             .loop(undefined, true);
     }
 
-    updatePlayer(player) {
+    updatePlayer(player, half) {
+        let xOffset = half === 1 ? -TILE_SIZE / 4 : half === 2 ? TILE_SIZE / 4 : 0;
         this.playerSvgs[player.id]
             .stop(false, true)
             .animate(600, '<>')
             .attr({
-                cx: player.x * TILE_SIZE + TILE_SIZE / 2,
+                cx: player.x * TILE_SIZE + TILE_SIZE / 2 + xOffset,
                 cy: player.y * TILE_SIZE + TILE_SIZE / 2,
                 r: player.size,
                 dy: 0

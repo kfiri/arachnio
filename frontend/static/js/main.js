@@ -29,12 +29,30 @@ let game = new (function() {
                           "\nboard=" + this.board + "\nplayer=" + userPlayer);
             return;
         }
-        this.updatePlayers(data.players);
+        updatePlayers(data.players);
     }
 
     let updatePlayers = (updatedPlayers) => {
-        let allPlayers = Object.assign({}, this.board.players, updatedPlayers)
-        for (playerID in allPlayers) {
+        let allPlayers = Object.assign({}, this.board.players, updatedPlayers);
+
+        // Test for cases of two players on the same tile.
+        let firstHalves = [];
+        let secondHalves = [];
+        let coordMapping = {};
+        for (let playerID in allPlayers) {
+            let coords = allPlayers[playerID].x + ',' + allPlayers[playerID].y;
+            console.log(playerID);
+            if (coordMapping[coords]) {
+                firstHalves.push(coordMapping[coords]);
+                secondHalves.push(playerID);
+            } else {
+                coordMapping[coords] = playerID;
+            }
+        }
+
+        for (let playerID in allPlayers) {
+            let playerIsFirstHalf = firstHalves.indexOf(playerID) > -1;
+            let playerIsSecondHalf = secondHalves.indexOf(playerID) > -1;
             if (updatedPlayers.hasOwnProperty(playerID)) {
                 let player = this.board.getPlayer(playerID)
                 if (player == null) {
@@ -42,7 +60,7 @@ let game = new (function() {
                     this.boardView.addPlayer(player);
                 } else {
                     player.update(updatedPlayers[playerID])
-                    this.boardView.updatePlayer(player);
+                    this.boardView.updatePlayer(player, playerIsFirstHalf ? 1 : playerIsSecondHalf ? 2 : 0);
                 }
             } else {
                 this.board.deletePlayer(playerID);
@@ -81,8 +99,23 @@ let game = new (function() {
     }
 
     this.start = () => {
-        openWebSocket();
-        console.log('Connecting...');
+//        openWebSocket();
+        console.log('Not actually connecting...');
+        getServerData({
+            width: 10,
+            height: 8,
+            is_cyclic: false
+        });
+        createPlayer({id:'asdf',x:3,y:5,score:0,name:'Pastenizer'});
+        createPlayer({id:'ghjkl',x:4,y:5,score:0,name:'Cyberator'});
+        setTimeout(() => {
+            updatePlayers({'asdf': {id:'asdf',x:4,y:5,score:0,name:'Pastenizer'},
+                           'ghjkl': {id:'ghjkl',x:4,y:5,score:0,name:'Cyberator'}});
+        }, 1000);
+        setTimeout(() => {
+            updatePlayers({'asdf': {id:'asdf',x:4,y:4,score:0,name:'Pastenizer'},
+                           'ghjkl': {id:'ghjkl',x:4,y:5,score:0,name:'Cyberator'}});
+        }, 2000);
     }
 
     this.getBonusSquares = () => {
