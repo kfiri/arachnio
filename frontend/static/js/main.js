@@ -58,8 +58,8 @@ let game = new (function() {
                     player.update(updatedPlayers[playerID])
                     let indexOnTile = coordMapping[player.x + ',' + player.y].indexOf(playerID);
                     let countOnTile = coordMapping[player.x + ',' + player.y].length;
-                    if (!_.isEqual(old, player)) {
-                        boardView.updatePlayer(player, countOnTile, indexOnTile);
+                    if (old.x !== player.x || old.y !== player.y || old.score !== player.score) {
+                        this.boardView.updatePlayer(player, countOnTile, indexOnTile);
                     }
                 }
             } else {
@@ -72,7 +72,7 @@ let game = new (function() {
             }
         }
     };
-    
+
     let makeTurn = () => {};
     let askForNewPlayer = () => {};
 
