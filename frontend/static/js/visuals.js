@@ -4,6 +4,7 @@ class BoardView {
     constructor(cols, rows) {
         this.playerSvgs = {};
         this.bonusSvgs = {};
+        this.nametagSvgs = {};
         this.svg = SVG('board').size(TILE_SIZE * cols, TILE_SIZE * rows);
         for (let x = 0; x < cols; x++) {
             for (let y = 0; y < rows; y++) {
@@ -30,6 +31,15 @@ class BoardView {
             .animate(1000, '<>')
             .dy(-4)
             .loop(undefined, true);
+        this.nametagSvgs[player.id] = this.svg.text(player.name || 'Deuce')
+            .move(player.x * TILE_SIZE + TILE_SIZE / 2, player.y * TILE_SIZE + TILE_SIZE / 2 + 20)
+            .font({
+                anchor: 'middle',
+                family: '"Helvetica Neue", Helvetica, Arial, "Liberation Sans", sans-serif',
+                fill: '#222',
+                stroke: '#eee',
+                weight: 900
+            });
     }
 
     updatePlayer(player, countOnTile, indexOnTile) {
@@ -48,6 +58,10 @@ class BoardView {
             .animate(1000, '<>')
             .dy(-4)
             .loop(undefined, true);
+        this.nametagSvgs[player.id]
+            .stop(false, true)
+            .animate(400, '-')
+            .move(player.x * TILE_SIZE + TILE_SIZE / 2 + xOffset, player.y * TILE_SIZE + TILE_SIZE / 2);
     }
 
     deletePlayer(player) {
@@ -61,6 +75,7 @@ class BoardView {
             .after(() => {
                 playerSvg._target.remove();
             });
+        this.nametagSvgs[player.id].remove();
     }
 
     placeBonus(x, y, circleCount) {
