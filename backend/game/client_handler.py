@@ -57,7 +57,7 @@ def type_knock_handler(src_socket, data):
 ClientWebSocketHandler.register_message_type_handler(message.KNOCK, type_knock_handler)
 
 def type_update_handler(src_socket, data):
-    x_delta, y_delta = data
+    x_delta, y_delta = data['direction']
     if x_delta not in [-1,0,1]: raise MalformedMessageException("x_delta needs to be in [-1,0,1]")
     if y_delta not in [-1,0,1]: raise MalformedMessageException("y_delta needs to be in [-1,0,1]")
     player = ClientWebSocketHandler.game.socket_to_player[src_socket]

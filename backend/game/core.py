@@ -27,14 +27,14 @@ class Game(object):
         self.is_cyclic = is_cyclic
     
     def move_player(self, player, x_delta, y_delta):
-        if (player.x + x_delta > self.width or player.x + x_delta < 0) and self.is_cyclic:
+        if (player.x + x_delta > self.width or player.x + x_delta <= 0) and self.is_cyclic:
             player.x = (player.x + x_delta) % self.width
-        elif (0 < player.x + x_delta < self.width):
+        elif (0 <= player.x + x_delta < self.width):
             player.x = player.x + x_delta
         
-        if (player.y + y_delta > self.height or player.y + y_delta < 0) and self.is_cyclic:
+        if (player.y + y_delta > self.height or player.y + y_delta <= 0) and self.is_cyclic:
             player.y = (player.y + y_delta) % self.height
-        elif (0 < player.y + y_delta < self.height):
+        elif (0 <= player.y + y_delta < self.height):
             player.y = player.y + y_delta
 
         if not player.in_cooldown:

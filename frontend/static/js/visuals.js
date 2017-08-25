@@ -23,7 +23,7 @@ class BoardView {
                 cy: player.y * TILE_SIZE + TILE_SIZE / 2,
                 fill: player.color || '#a00'
             })
-            .animate(400, '<>')
+            .animate(100, '<>')
             .attr({
                 r: player.size
             })
@@ -36,7 +36,7 @@ class BoardView {
         let xOffset = countOnTile * 9 - 9;
         this.playerSvgs[player.id]
             .stop(false, true)
-            .animate(600, '<>')
+            .animate(100, '<>')
             .attr({
                 cx: player.x * TILE_SIZE + TILE_SIZE / 2 + xOffset,
                 cy: player.y * TILE_SIZE + TILE_SIZE / 2,
