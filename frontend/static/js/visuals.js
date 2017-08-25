@@ -23,7 +23,7 @@ class BoardView {
                 cy: player.y * TILE_SIZE + TILE_SIZE / 2,
                 fill: '#' + player.id.slice(0, 3)
             })
-            .animate(400, '<>')
+            .animate(100, '<>')
             .attr({
                 r: player.size
             })
@@ -32,16 +32,19 @@ class BoardView {
             .loop(undefined, true);
     }
 
-    updatePlayer(player) {
+    updatePlayer(player, countOnTile, indexOnTile) {
+        let xOffset = countOnTile * 9 - 9;
         this.playerSvgs[player.id]
             .stop(false, true)
-            .animate(600, '<>')
+            .animate(100, '<>')
             .attr({
-                cx: player.x * TILE_SIZE + TILE_SIZE / 2,
+                cx: player.x * TILE_SIZE + TILE_SIZE / 2 + xOffset,
                 cy: player.y * TILE_SIZE + TILE_SIZE / 2,
                 r: player.size,
                 dy: 0
             })
+            .rotate(360 / countOnTile * indexOnTile, player.x * TILE_SIZE + TILE_SIZE / 2,
+                    player.y * TILE_SIZE + TILE_SIZE / 2)
             .animate(1000, '<>')
             .dy(-4)
             .loop(undefined, true);

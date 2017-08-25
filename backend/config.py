@@ -14,4 +14,4 @@ PORT = 10946
 # Game related values
 WIDTH = 16
 HEIGHT = 16
-IS_CYCLIC = True
+IS_CYCLIC = False
