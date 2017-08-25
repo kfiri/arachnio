@@ -41,7 +41,6 @@ let game = new (function() {
         let coordMapping = {};
         for (let playerID in allPlayers) {
             let coords = allPlayers[playerID].x + ',' + allPlayers[playerID].y;
-            console.log(playerID);
             if (coordMapping[coords]) {
                 firstHalves.push(coordMapping[coords]);
                 secondHalves.push(playerID);
@@ -99,23 +98,8 @@ let game = new (function() {
     }
 
     this.start = () => {
-//        openWebSocket();
-        console.log('Not actually connecting...');
-        getServerData({
-            width: 10,
-            height: 8,
-            is_cyclic: false
-        });
-        createPlayer({id:'asdf',x:3,y:5,score:0,name:'Pastenizer'});
-        createPlayer({id:'ghjkl',x:4,y:5,score:0,name:'Cyberator'});
-        setTimeout(() => {
-            updatePlayers({'asdf': {id:'asdf',x:4,y:5,score:0,name:'Pastenizer'},
-                           'ghjkl': {id:'ghjkl',x:4,y:5,score:0,name:'Cyberator'}});
-        }, 1000);
-        setTimeout(() => {
-            updatePlayers({'asdf': {id:'asdf',x:4,y:4,score:0,name:'Pastenizer'},
-                           'ghjkl': {id:'ghjkl',x:4,y:5,score:0,name:'Cyberator'}});
-        }, 2000);
+        openWebSocket();
+        console.log('Connecting...');
     }
 
     this.getBonusSquares = () => {
