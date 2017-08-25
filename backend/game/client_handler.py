@@ -34,6 +34,7 @@ class ClientWebSocketHandler(WebSocketHandler):
             logbook.debug('Malformed message: {}'.format(repr(message)))
             logbook.warn('Received a malformed message from <{}>, disconnecting..'
                 .format(self.game.socket_to_player[self].id))
+            # TODO: replace to player#kill...
             self.game.socket_to_player.pop(self, None)
             self.close()
     
