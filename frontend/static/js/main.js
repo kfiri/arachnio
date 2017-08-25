@@ -60,9 +60,9 @@ let game = new (function() {
                 } else {
                     // Update only if the data has actually changed, to prevent animations from stopping and restarting
                     // all the time.
-                    let old = {x: player.x, y: player.y, score: player.score};
+                    let old = player.toJSON();
                     player.update(updatedPlayers[playerID])
-                    if (player.x !== old.x || player.y !== old.y || player.score !== old.score) {
+                    if (!_.isEqual(old, player)) {
                         this.boardView.updatePlayer(player, playerIsFirstHalf ? 1 : playerIsSecondHalf ? 2 : 0);
                     }
                 }
