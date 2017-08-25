@@ -6,8 +6,6 @@ Educational multiplayer coding game
 coders the art of programming. It is inspired by **Planet Wars** and
 **Agar.io**.
 
-![arachnio1.png]
-
 ### Goals
 In this project, we aimed to assist teenagers in middle and high schools
 educating themselves in the world of computer science.
