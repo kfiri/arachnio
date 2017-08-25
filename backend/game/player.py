@@ -19,7 +19,7 @@ class Player(object):
     
     def get_cooldown_duration(self):
         size = self.score * consts.SCORE_SIZE + consts.INITIAL_SIZE
-        return consts.INITIAL_SPEED / math.log1p(size)
+        return math.log1p(size) / consts.INITIAL_SPEED
 
     @staticmethod
     def generate_id():

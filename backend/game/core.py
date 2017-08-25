@@ -37,9 +37,10 @@ class Game(object):
         elif (0 < player.y + y_delta < self.width):
             player.y = player.y + y_delta
 
+        if not player.in_cooldown:
+            IOLoop.current().call_later(player.get_cooldown_duration(), player.disable_cooldown)
         player.in_cooldown = True
         # TODO: Ultimate todo.. see bottom comments
-        IOLoop.current().call_later(player.get_cooldown_duration(), player.disable_cooldown)
         # Maybe update locations here?
         players_at_location = self.get_players_at(player.x, player.y)
         # Solve possible conflicts here..

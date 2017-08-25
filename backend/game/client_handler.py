@@ -63,4 +63,4 @@ def type_update_handler(src_socket, data):
     player = ClientWebSocketHandler.game.socket_to_player[src_socket]
     ClientWebSocketHandler.game.move_player(player, x_delta, y_delta)
 
-ClientWebSocketHandler.register_message_type_handler(message.UPDATE, type_knock_handler)
+ClientWebSocketHandler.register_message_type_handler(message.UPDATE, type_update_handler)
