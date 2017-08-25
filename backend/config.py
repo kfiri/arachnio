@@ -12,6 +12,6 @@ IP = '0.0.0.0'
 PORT = 10946
 
 # Game related values
-WIDTH = 16
+WIDTH = 14
 HEIGHT = 16
 IS_CYCLIC = False

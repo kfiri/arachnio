@@ -1,5 +1,6 @@
 import json
 import logbook
+from simplejson import JSONDecodeError
 from tornado.websocket import WebSocketHandler
 
 from .core import Game
@@ -29,7 +30,7 @@ class ClientWebSocketHandler(WebSocketHandler):
             message = json.loads(message)
             self.message_type_handlers[message['type']](self, message['data'])
 
-        except (KeyError, json.JSONDecodeError, MalformedMessageException):
+        except (KeyError, JSONDecodeError, MalformedMessageException):
             logbook.debug('Malformed message: {}'.format(repr(message)))
             logbook.warn('Received a malformed message from <{}>, disconnecting..'
                 .format(self.game.socket_to_player[self].id))

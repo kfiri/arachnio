@@ -28,8 +28,12 @@
         </div>
     </div>
     <div id="user-interface">
+        <button onclick="game.user.name = document.getElementById('user-name-input').value; game.user.code = document.getElementById('user-code').value;">
+            Save & Run!
+        </button>
+        <input type="text" name="user-name" id="user-name-input" value="Player">
         <textarea id="user-code">
-
+                nextMove.direction = DIRECTIONS.DOWN_RIGHT;
         </textarea>
     </div>
 

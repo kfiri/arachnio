@@ -4,18 +4,27 @@ body {
     font-family: 'Helvetica', 'Arial', 'Liberation Sans', sans-serif
 }
 
+#game {
+    width: 75vw;
+    display: inline-block;
+}
+
 #board {
     overflow: hidden;
     width: 100%;
-    height: 75vh;
     text-align: center;
 }
 
+#user-interface {
+    width: 20vw;
+    display: inline-block;
+}
+
 #user-code {
-    height: 24vh;
     border: none;
     margin: 0;
     padding: 0;
     width: 100%;
+    height: 90vh;
     font-family: 'Inconsolata', 'Menlo', 'Monaco', 'Consolas', 'Courier New', 'DejaVu Sans Mono', monospace;
 }

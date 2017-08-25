@@ -1,11 +1,12 @@
 let game = new (function() {
     this.board = null;
-    this.boardView = null;
     this.user = new (function() {
-        this.name = null;
-        this.botType = EvalBot;
+        this.name = document.getElementById("user-name-input").value;
+        this.code = document.getElementById("user-code").value;
     })();
     let userPlayer = null;
+
+    let boardView = null;
 
     let getServerData = (data) => {
         this.board = new Board(utils.mapObject(data, {
@@ -13,12 +14,12 @@ let game = new (function() {
             board_height: "height",
             is_cyclic: "isCyclic"
         }));
-        this.boardView = new BoardView(this.board.width, this.board.height);
+        boardView = new BoardView(this.board.width, this.board.height);
     };
 
     let createPlayer = (data) => {
         userPlayer = this.board.addPlayer(data.id, data);
-        this.boardView.addPlayer(userPlayer);
+        boardView.addPlayer(userPlayer);
     };
 
     let updateBoard = (data) => {
@@ -49,7 +50,7 @@ let game = new (function() {
                 let player = this.board.getPlayer(playerID)
                 if (player == null) {
                     player = this.board.addPlayer(playerID, updatedPlayers[playerID]);
-                    this.boardView.addPlayer(player);
+                    boardView.addPlayer(player);
                 } else {
                     // Update only if the data has actually changed, to prevent animations from stopping and restarting
                     // all the time.
@@ -58,12 +59,12 @@ let game = new (function() {
                     let indexOnTile = coordMapping[player.x + ',' + player.y].indexOf(playerID);
                     let countOnTile = coordMapping[player.x + ',' + player.y].length;
                     if (!_.isEqual(old, player)) {
-                        this.boardView.updatePlayer(player, countOnTile, indexOnTile);
+                        boardView.updatePlayer(player, countOnTile, indexOnTile);
                     }
                 }
             } else {
                 this.board.deletePlayer(playerID);
-                this.boardView.deletePlayer(allPlayers[playerID]);
+                boardView.deletePlayer(allPlayers[playerID]);
                 if (playerID === userPlayer.id) {
                     userPlayer = null;
                     alert("You died!")
@@ -71,9 +72,19 @@ let game = new (function() {
             }
         }
     };
+    
+    let makeTurn = () => {};
+    let askForNewPlayer = () => {};
 
     let openWebSocket = () => {
         let webSocket = new WebSocket("ws://localhost:10946/ws");  //TODO: change from localhost.
+        askForNewPlayer = () => {
+            webSocket.send(JSON.stringify({
+                type: "knock",
+                data: {name: this.user.name}
+            }));
+        }
+
         webSocket.onmessage = message => {
             message = JSON.parse(message.data);
             let messageType = message.type;
@@ -81,10 +92,7 @@ let game = new (function() {
             switch(messageType) {
                 case("welcome"):
                     getServerData(messageData);
-                    webSocket.send(JSON.stringify({
-                        type: "knock",
-                        data: {name: this.user.name}
-                    }));
+                    askForNewPlayer();
                     break;
                 case("knockack"):
                     createPlayer(messageData);
@@ -101,31 +109,34 @@ let game = new (function() {
         webSocket.onclose = () => {
             alert("Lost connection to the server!");
         }
-        this.makeTurn = (args) => {
+        makeTurn = (args) => {
             webSocket.send(JSON.stringify({type: "update", data: args}));
         }
     };
 
     async function runBot(user) {
-        let myCode = `// My first bot!
-        console.log(this);
-        nextMove.direction = [-1, -1]`
-        function bot(code, nextMove) {
-            eval("(() => {" + code + "})()");
-            game.makeTurn(nextMove);
+        function bot(nextMove) {
+            try {
+                eval("(() => {" + game.user.code + "})()");
+            } catch (e) {
+
+            }
+            makeTurn(nextMove);
         }
         while (true) {
-            if (userPlayer != null) {
+            while (userPlayer != null) {
                 bot.call(Object.assign(userPlayer.toJSON(), {
                     size: userPlayer.size,
                     speed: userPlayer.speed
-                }), myCode, {direction: [0, 0]});
+                }), {direction: [0, 0]});
+                await utils.sleep(250);
             }
-            await utils.sleep(250);
+            await utils.sleep(1000);
+            askForNewPlayer();
         }
     }
 
-    this.start = () => {
+    let start = () => {
         openWebSocket();
         console.log('Connecting...');
         runBot(this.user);
@@ -135,6 +146,6 @@ let game = new (function() {
     this.getBonusSquares = () => {
         return Object.entries(this.board.squares).map(([key, square]) => square).filter(square => square.points);
     };
-})();
 
-game.start();
+    start();
+})();
