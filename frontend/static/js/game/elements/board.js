@@ -14,6 +14,9 @@ class Board {
     }
 
     getSquare(x, y) {
+        if (x < 0 || x >= this.width || y < 0 || y >= this.height) {
+            return null;
+        }
         return utils.getDefault(this.squares, [x, y],
             this.squares[x, y] = new Square({x, y}));
     }
