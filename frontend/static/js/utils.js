@@ -15,4 +15,8 @@ let utils = new (function () {
         }
         return mappedObj;
     };
+    let sleep = function(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+      }
+    this.sleep = ms => (await sleep(ms));
 })();

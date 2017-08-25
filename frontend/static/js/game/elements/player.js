@@ -47,7 +47,10 @@ class Player {
             name: this.name,
             x: this.x,
             y: this.y,
-            score: this.score
+            score: this.score,
+            size: this.size,
+            speed: this.speed,
+            secondsToNextMove: this.secondsToNextMove()
         };
     }
 }
