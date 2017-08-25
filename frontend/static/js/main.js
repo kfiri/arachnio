@@ -109,7 +109,7 @@ let game = new (function() {
         openWebSocket();
         console.log('Connecting...');
         runBot(this.user);
-        console.log('Lunching bot...');
+        console.log('Launching bot...');
     };
 
     this.getBonusSquares = () => {
