@@ -21,7 +21,7 @@ class BoardView {
             .attr({
                 cx: player.x * TILE_SIZE + TILE_SIZE / 2,
                 cy: player.y * TILE_SIZE + TILE_SIZE / 2,
-                fill: player.color || '#a00'
+                fill: '#' + player.id.slice(0, 3)
             })
             .animate(400, '<>')
             .attr({
