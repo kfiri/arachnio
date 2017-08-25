@@ -35,23 +35,18 @@ let game = new (function() {
     let updatePlayers = (updatedPlayers) => {
         let allPlayers = Object.assign({}, this.board.players, updatedPlayers);
 
-        // Test for cases of two players on the same tile.
-        let firstHalves = [];
-        let secondHalves = [];
+        // Test for cases of two or more players on the same tile.
         let coordMapping = {};
         for (let playerID in allPlayers) {
             let coords = allPlayers[playerID].x + ',' + allPlayers[playerID].y;
             if (coordMapping[coords]) {
-                firstHalves.push(coordMapping[coords]);
-                secondHalves.push(playerID);
+                coordMapping[coords].push(playerID);
             } else {
-                coordMapping[coords] = playerID;
+                coordMapping[coords] = [playerID];
             }
         }
 
         for (let playerID in allPlayers) {
-            let playerIsFirstHalf = firstHalves.indexOf(playerID) > -1;
-            let playerIsSecondHalf = secondHalves.indexOf(playerID) > -1;
             if (updatedPlayers.hasOwnProperty(playerID)) {
                 let player = this.board.getPlayer(playerID)
                 if (player == null) {
@@ -62,8 +57,10 @@ let game = new (function() {
                     // all the time.
                     let old = player.toJSON();
                     player.update(updatedPlayers[playerID])
+                    let indexOnTile = coordMapping[player.x + ',' + player.y].indexOf(playerID);
+                    let countOnTile = coordMapping[player.x + ',' + player.y].length;
                     if (!_.isEqual(old, player)) {
-                        this.boardView.updatePlayer(player, playerIsFirstHalf ? 1 : playerIsSecondHalf ? 2 : 0);
+                        this.boardView.updatePlayer(player, countOnTile, indexOnTile);
                     }
                 }
             } else {
